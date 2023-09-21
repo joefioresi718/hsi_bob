@@ -16,15 +16,6 @@ zcta_list = pov_file['Zip code tablulation area (ZCTA)'].tolist()
 pov_file = pov_file[pov_file['Poverty status in the past 12 months by household type by age of householder, households, total'] != 0]
 zcta_list = pov_file['Zip code tablulation area (ZCTA)'].tolist()
 
-# Get poverty ratios to add.
-poverty_ratios = {zip_code: float(y / x) for zip_code, x, y in zip(zcta_list, pov_file[
-    'Poverty status in the past 12 months by household type by age of householder, households, total'].tolist(), pov_file[
-poverty_ratios = {zip_code: float(y / x) for zip_code, x, y in zip(zcta_list, pov_file[
-    'Poverty status in the past 12 months by household type by age of householder, households, total'].tolist(), pov_file[
-    'Poverty status in the past 12 months by household type by age of householder, households, total, income in the past 12 months below poverty level'
-    ].tolist())}
-
-
 # Add cdc file data.
 # cdc_dict = pd.read_excel('data/CDC Places Data Dictionary.xlsx')
 cdc_file = pd.read_csv('data/CDC Places 2020 Health Outcomes.csv')
