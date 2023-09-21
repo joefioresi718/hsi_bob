@@ -7,13 +7,18 @@ master_df = pd.DataFrame()
 
 # Use poverty file for zip codes.
 pov_file = pd.read_csv('clean_data/ACS 2020 Table 10 HH Poverty.csv')
+pov_file = pd.read_csv('clean_data/ACS 2020 Table 10 HH Poverty.csv')
 
 # Get zip code list.
 # Get rid of zip codes with 0 households.
 pov_file = pov_file[pov_file['Poverty status in the past 12 months by household type by age of householder, households, total'] != 0]
 zcta_list = pov_file['Zip code tablulation area (ZCTA)'].tolist()
+pov_file = pov_file[pov_file['Poverty status in the past 12 months by household type by age of householder, households, total'] != 0]
+zcta_list = pov_file['Zip code tablulation area (ZCTA)'].tolist()
 
 # Get poverty ratios to add.
+poverty_ratios = {zip_code: float(y / x) for zip_code, x, y in zip(zcta_list, pov_file[
+    'Poverty status in the past 12 months by household type by age of householder, households, total'].tolist(), pov_file[
 poverty_ratios = {zip_code: float(y / x) for zip_code, x, y in zip(zcta_list, pov_file[
     'Poverty status in the past 12 months by household type by age of householder, households, total'].tolist(), pov_file[
     'Poverty status in the past 12 months by household type by age of householder, households, total, income in the past 12 months below poverty level'
