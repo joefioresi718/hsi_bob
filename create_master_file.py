@@ -46,36 +46,37 @@ cdc_file.dropna(subset=['mhlth_crudeprev'], inplace=True)
 master_df = pd.concat([master_df, cdc_file], ignore_index=True)
 # print(master_df.head(10))
 
+################ Deemed irrelevant!!! ##################################
 # Add hospital data.
-hospital_file = pd.read_csv('data/Hospital Compare 2020.csv')
+# hospital_file = pd.read_csv('data/Hospital Compare 2020.csv')
 
-# Only use zip codes in master file.
-hospital_file['zip_code'] = pd.Categorical(hospital_file['zip_code'], categories=master_df['zcta'].tolist(), ordered=True)
-hospital_file = hospital_file[hospital_file['zip_code'].isin(zcta_list)]
+# # Only use zip codes in master file.
+# hospital_file['zip_code'] = pd.Categorical(hospital_file['zip_code'], categories=master_df['zcta'].tolist(), ordered=True)
+# hospital_file = hospital_file[hospital_file['zip_code'].isin(zcta_list)]
 
-# Drop 'irrelevant' categories.
-hospital_file.drop(columns=['year', 'hospital_compare_id', 'address', 'city', 'state', 'county_name', 'phone_number', 'hospital_type', 'hospital_ownership', 'emergency_services', 'meets_criteria_for_meaningful_use_of_ehrs', 'hospital_overall_rating_footnote', 'mortality_national_comparison_footnote', 'safety_of_care_national_comparison_footnote', 'readmission_national_comparison_footnote', 'patient_experience_national_comparison_footnote', 'effectiveness_of_care_national_comparison_footnote', 'timeliness_of_care_national_comparison_footnote', 'efficient_use_of_medical_imaging_national_comparison_footnote'], inplace=True)
+# # Drop 'irrelevant' categories.
+# hospital_file.drop(columns=['year', 'hospital_compare_id', 'address', 'city', 'state', 'county_name', 'phone_number'], inplace=True)
 
-# Deal with hospital duplicates within zip codes.
-hospital_duplicates = hospital_file[hospital_file.duplicated(subset=['zip_code'], keep=False)]
-hospital_duplicates.sort_values(by=['zip_code'], inplace=True, ascending=True, ignore_index=True)
+# # Deal with hospital duplicates within zip codes.
+# hospital_duplicates = hospital_file[hospital_file.duplicated(subset=['zip_code'], keep=False)]
+# hospital_duplicates.sort_values(by=['zip_code'], inplace=True, ascending=True, ignore_index=True)
 
-duplicated_zip_codes = list(set(hospital_duplicates['zip_code'].tolist()))
+# duplicated_zip_codes = list(set(hospital_duplicates['zip_code'].tolist()))
 
-hospital_agg_stats = {}
-for zip_code in duplicated_zip_codes:
-    hospital_agg_stats[zip_code] = {}
-    dup_series = hospital_duplicates[hospital_duplicates['zip_code'] == zip_code]
-    for row in dup_series:
-        for col in dup_series.columns:
-            if str(col) != 'zip_code':
-                if col not in hospital_agg_stats:
-                    hospital_agg_stats[zip_code][col] = []
-                hospital_agg_stats[zip_code][col].append(dup_series[col])
+# hospital_agg_stats = {}
+# for zip_code in duplicated_zip_codes:
+#     if zip_code == 43016:
+#         continue
+#     hospital_agg_stats[zip_code] = {}
+#     dup_series = hospital_duplicates[hospital_duplicates['zip_code'] == zip_code]
+#     for col in dup_series.columns:
+#         print(dup_series[col].tolist())
 
-print(hospital_agg_stats)
+#     exit()
 
-print(len(hospital_file), len(set(hospital_file['zip_code'].tolist())))
+# print(hospital_agg_stats)
+
+# print(len(hospital_file), len(set(hospital_file['zip_code'].tolist())))
 
 exit()
 
