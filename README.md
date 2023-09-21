@@ -26,7 +26,7 @@
 
 # Running Yourself
 #### 1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm`
-#### 2. Run `npm install pandas` in your command line (command prompt on Windows and terminal on MAC)
+#### 2. Run `pip install pandas openpyxl` in your command line (command prompt on Windows and terminal on MAC)
 #### 3. `cd` into your directory where you would like to clone our repository.
 #### 4. Use `git clone https://github.com/joefioresi718/hsi_bob.git` to clone our repository
 #### 5. Run the python files using compiler of your choice, see printed results and saved results
