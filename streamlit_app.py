@@ -49,7 +49,6 @@ def center_app():
 def add_blank_space(height_in_px=100):
     st.markdown(f"<div style='height:{height_in_px}px;'></div>", unsafe_allow_html=True)
 
-
 center_app()
 st.image('images/SOL Logo Transparent.png')
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -63,24 +62,25 @@ def type_text(message, delay=0.1):
         time.sleep(delay)
     return container
 
-# Call the function with your message
 type_text("Scroll down and learn more!", delay=0.05)
 add_blank_space(300)
 def aligned_text(text, alignment='left'):
-    # Using markdown to control alignment with CSS
     st.markdown(f"<p style='text-align: {alignment}; font-weight:bold;'>{text}</p>", unsafe_allow_html=True)
 
-# Usage examples:
 aligned_text("Data driven analysis", "left")
 aligned_text("Machine learning for predictive results", "center")
 aligned_text("Scaling and bias prevention", "right")
 add_blank_space(25)
+
 st.image("images/Relevant Locations.png")
 st.subheader("We are launching initial locations based off of U.S. census data")
 add_blank_space(25)
+
 st.image("images/Census Graph.png")
 st.subheader("Provide correlations using lasso regression")
 add_blank_space(50)
+
+st.divider()
 st.subheader("Enter your zip code to see your regions results!")
 
 zipcode = st.text_input("")
@@ -103,17 +103,16 @@ if zipcode:
         else:
             df = df.loc[:, categories]
             new_df = pd.DataFrame({'Categories': category_names, 'Values': df.iloc[0]})
-            plt.rcParams['axes.labelsize'] = 28  # Set x and y labels font size
-            plt.rcParams['axes.titlesize'] = 32  # Set title font size
-            plt.rcParams['xtick.labelsize'] = 24  # Set x tick labels font size
-            plt.rcParams['ytick.labelsize'] = 24  # Set y tick labels font size
+            plt.rcParams['axes.labelsize'] = 28
+            plt.rcParams['axes.titlesize'] = 32
+            plt.rcParams['xtick.labelsize'] = 24
+            plt.rcParams['ytick.labelsize'] = 24
             plt.figure(figsize=(14, 10))
             plt.title('Census Statistics for Zip Code ' + str(zipcode))
             sns.barplot(x='Categories', y='Values', data=new_df, palette='Blues_d')
             plt.xticks(rotation=30)
             st.pyplot()
 
-add_blank_space(600)
 if 'button_pressed' not in st.session_state:
     st.session_state.button_pressed = False
 if st.button("Activate Balloons!"):

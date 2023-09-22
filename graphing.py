@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -10,11 +9,7 @@ cmap_name = 'blue_yellow'
 blue_yellow = LinearSegmentedColormap.from_list(cmap_name, colors)
 
 master_df = pd.read_csv('clean_data/master.csv')
-# cmap_name = 'Blues_d'
 cmap = sns.color_palette("Blues_r", n_colors=3) + sns.color_palette("YlOrBr", n_colors=7)[:3]
-# sns.palplot(cmap_name)
-# plt.show()
-# exit()
 
 dental_crudeprev = -260.1234740089023
 casthma_crudeprev = 169.0422638032042 
@@ -30,22 +25,17 @@ data = {
 df = pd.DataFrame(data)
 df.sort_values(by=['values'], inplace=True, ascending=False, ignore_index=True)
 
-# Create a bar plot.
-plt.rcParams['axes.labelsize'] = 28  # Set x and y labels font size
-plt.rcParams['axes.titlesize'] = 21  # Set title font size
-plt.rcParams['xtick.labelsize'] = 20  # Set x tick labels font size
-# plt.rcParams['ytick.labelsize'] = 24  # Set y tick labels font size
+plt.rcParams['axes.labelsize'] = 28
+plt.rcParams['axes.titlesize'] = 21
+plt.rcParams['xtick.labelsize'] = 20
 plt.figure(figsize=(10, 14))
 plt.title('Correlation between Census Statistics and Mental Health/Poverty')
-# sns.regplot(x='ghlth_crudeprev', y='mhlth_pov_index', data=master_df)
 sns.barplot(x='categories', y='values', data=data, order=df['categories'].tolist(), palette=cmap)
-# Set the x-axis labels diagonal
 plt.xticks(rotation=25)
-# Remove numbers on the y-axis.
 plt.yticks([])
 plt.savefig("images/Graph 1.png")
 
-# Normalize column data.
+
 def minmax_normalize(series):
     min_val = series.min()
     max_val = series.max()
@@ -54,33 +44,27 @@ def minmax_normalize(series):
 master_df['weighted_index'] = master_df['poverty_ratio']**0.33 + master_df['totalpopulation']**0.34 + master_df['mhlth_crudeprev']**0.33
 master_df['weighted_index'] = minmax_normalize(master_df['weighted_index'])
 master_df.sort_values(by=['weighted_index'], inplace=True, ascending=False, ignore_index=True)
-# df_melted = df.melt(id_vars="Category", value_vars=["Value_1", "Value_2"], 
-#                     var_name="Variable", value_name="Value")
 
 df = master_df.head(5)
 df['location'] = ['Tallahassee, FL', 'Bronx (NYC), NY', 'Los Angeles, CA', 'Brownsville, TX', 'Brooklyn, NY']
-# print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev', 'poverty_ratio']])
 
 
-# Combined index plot.
 plt.figure(figsize=(12, 12))
-plt.rcParams['axes.labelsize'] = 28  # Set x and y labels font size
-plt.rcParams['axes.titlesize'] = 28  # Set title font size
-plt.rcParams['xtick.labelsize'] = 20  # Set x tick labels font size
-plt.rcParams['ytick.labelsize'] = 24  # Set y tick labels font size
+plt.rcParams['axes.labelsize'] = 28
+plt.rcParams['axes.titlesize'] = 28
+plt.rcParams['xtick.labelsize'] = 20
+plt.rcParams['ytick.labelsize'] = 24
 plt.xticks(rotation=10)
 sns.barplot(x='location', y='weighted_index', data=df, palette=cmap, order=df['location'].tolist())
 plt.ylim((0.9, 1.0))
 plt.title('Top 5 Zip Codes with Highest Weighted Index')
 plt.savefig("images/Graph 2.png")
 
-# Combined bar plot.
 df = df[['location', 'poverty_ratio', 'mhlth_crudeprev']]
 df.rename({'mhlth_crudeprev': 'poor_mental_health'}, axis=1, inplace=True)
 df.plot(x='location', kind='bar', figsize=(10, 6), rot=0, colormap=blue_yellow, title='Poverty & Mental Health Issue Ratio per Zip Code', ylabel='Ratio', xlabel='Zip Code')
 plt.savefig("images/Graph 3.png")
 
-# Function to plot stats given a zip code.
 def plot_regression_values(zip_code, master_df, categories, category_names):
     df = master_df[master_df['zcta'] == zip_code]
     df = df.loc[:, categories]
