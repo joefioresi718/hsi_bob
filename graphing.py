@@ -15,22 +15,26 @@ ghlth_crudeprev = 68.74041508603842
 Race_total_population_total_white_alone = -45.37996938016137
 
 data = {
-    'categories': ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'depression', 'poor_physical_health', 'white_race'],
+    'categories': ['Dental', 'Asthma', 'Cholesterol', 'Smoking', 'Depression', 'Poor Health', 'White Race'],
     'values': [dental_crudeprev, casthma_crudeprev, cholscreen_crudeprev, csmoking_crudeprev, depression_crudeprev, ghlth_crudeprev, Race_total_population_total_white_alone]
     }
 df = pd.DataFrame(data)
 df.sort_values(by=['values'], inplace=True, ascending=False, ignore_index=True)
 
 # Create a bar plot.
-plt.figure(figsize=(10, 6))
+plt.rcParams['axes.labelsize'] = 28  # Set x and y labels font size
+plt.rcParams['axes.titlesize'] = 21  # Set title font size
+plt.rcParams['xtick.labelsize'] = 20  # Set x tick labels font size
+# plt.rcParams['ytick.labelsize'] = 24  # Set y tick labels font size
+plt.figure(figsize=(10, 14))
 plt.title('Correlation between Census Statistics and Mental Health/Poverty')
 # sns.regplot(x='ghlth_crudeprev', y='mhlth_pov_index', data=master_df)
 sns.barplot(x='categories', y='values', data=data, order=df['categories'].tolist(), palette='Blues_d')
 # Set the x-axis labels diagonal
-plt.xticks(rotation=15)
+plt.xticks(rotation=25)
 # Remove numbers on the y-axis.
 plt.yticks([])
-plt.show()
+plt.savefig("images/Graph 1.png")
 
 # Normalize column data.
 def minmax_normalize(series):
@@ -46,33 +50,37 @@ master_df.sort_values(by=['weighted_index'], inplace=True, ascending=False, igno
 
 df = master_df.head(5)
 df['location'] = ['Tallahassee, FL', 'Bronx (NYC), NY', 'Los Angeles, CA', 'Brownsville, TX', 'Brooklyn, NY']
-print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev', 'poverty_ratio']])
+# print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev', 'poverty_ratio']])
 
 
 # Combined index plot.
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(12, 12))
+plt.rcParams['axes.labelsize'] = 28  # Set x and y labels font size
+plt.rcParams['axes.titlesize'] = 28  # Set title font size
+plt.rcParams['xtick.labelsize'] = 20  # Set x tick labels font size
+plt.rcParams['ytick.labelsize'] = 24  # Set y tick labels font size
+plt.xticks(rotation=10)
 sns.barplot(x='location', y='weighted_index', data=df, palette="viridis", order=df['location'].tolist())
 plt.ylim((0.9, 1.0))
 plt.title('Top 5 Zip Codes with Highest Weighted Index')
-plt.show()
+plt.savefig("images/Graph 2.png")
 
 # Combined bar plot.
 df = df[['location', 'poverty_ratio', 'mhlth_crudeprev']]
 df.rename({'mhlth_crudeprev': 'poor_mental_health'}, axis=1, inplace=True)
 df.plot(x='location', kind='bar', figsize=(10, 6), rot=0, colormap='Set1', title='Poverty & Mental Health Issue Ratio per Zip Code', ylabel='Ratio', xlabel='Zip Code')
-plt.show()
+plt.savefig("images/Graph 3.png")
 
 # Function to plot stats given a zip code.
 def plot_regression_values(zip_code, master_df, categories, category_names):
     df = master_df[master_df['zcta'] == zip_code]
     df = df.loc[:, categories]
     new_df = pd.DataFrame({'categories': category_names, 'values': df.iloc[0]})
-    print(new_df)
     plt.figure(figsize=(10, 6))
     plt.title('Census Statistics for Zip Code ' + str(zip_code))
     sns.barplot(x='categories', y='values', data=new_df, palette='Blues_d')
     plt.xticks(rotation=15)
-    plt.show()
+    plt.savefig("images/Graph 4.png")
 
 categories = ['dental_crudeprev', 'casthma_crudeprev', 'cholscreen_crudeprev', 'csmoking_crudeprev', 'depression_crudeprev', 'ghlth_crudeprev', 'Race, total population, total, white alone', 'poverty_ratio', 'mhlth_crudeprev']
 category_names = ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'depression', 'poor_physical_health', 'white_race', 'poverty_ratio', 'poor_mental_health']
