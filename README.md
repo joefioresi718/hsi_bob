@@ -1,4 +1,4 @@
-# HSI Battle of the Brains 2023 Repository
+# Official UCF HSI Battle of the Brains 2023 Repository
 *Created by the University of Central Florida Team:*
 *Alejandra Alas, Ashley Smith, Joseph Fioresi, Kenneth Colón, Meleah Chase Malcolm, Quinn Barber, Ralph Balderamos III, and Sydney Damas*
 
