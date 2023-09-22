@@ -25,7 +25,7 @@
 ##### The `clean_data` folder encompasses processed, cleaned, and resulting data from the above files.
 
 # Running Yourself
-#### 1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm`
+#### 1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm` and `pip`
 #### 2. Run `pip install pandas openpyxl` in your command line (command prompt on Windows and terminal on MAC)
 #### 3. `cd` into your directory where you would like to clone our repository.
 #### 4. Use `git clone https://github.com/joefioresi718/hsi_bob.git` to clone our repository

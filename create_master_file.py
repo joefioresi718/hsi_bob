@@ -34,7 +34,7 @@ cdc_file = cdc_file[cdc_file['zcta'].isin(zcta_list)]
 # Drop NaN mental health stats.
 cdc_file.dropna(subset=['mhlth_crudeprev'], inplace=True)
 
-# Normalize all cdc data.
+# Normalize column data.
 def minmax_normalize(series):
     min_val = series.min()
     max_val = series.max()
@@ -112,7 +112,7 @@ master_df = master_df.copy()
 master_df['mhlth_pov_index'] = master_df['mhlth_crudeprev']**0.5 * master_df['poverty_ratio']**0.5
 master_df['mhlth_pov_index'] = minmax_normalize(master_df['mhlth_pov_index'])
 pov_columns = list(master_df.columns[master_df.columns.str.contains('poverty')])
-# pov_columns.remove('poverty_ratio')
+pov_columns.remove('poverty_ratio')
 master_df.drop(columns=pov_columns, inplace=True)
 # Drop duplicated population columns.
 master_df.drop(columns=['Race, total population, total', 'Sex by age, total population, total', 'Health insurance coverage status by sex by age, civilian noninstitutionalized population, total'], inplace=True)
