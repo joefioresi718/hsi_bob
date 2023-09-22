@@ -137,3 +137,10 @@ if st.button("Activate Balloons!"):
     st.session_state.button_pressed = True
 if st.session_state.button_pressed:
     st.balloons()
+
+st.title("Sponsors")
+st.image("images/Microsoft Logo.jpg")
+st.image("images/Modern Health.png")
+
+st.title("Powered By")
+st.image("images/KPMG Logo.png")
