@@ -59,7 +59,7 @@ master_df.sort_values(by=['weighted_index'], inplace=True, ascending=False, igno
 
 df = master_df.head(5)
 df['location'] = ['Tallahassee, FL', 'Bronx (NYC), NY', 'Los Angeles, CA', 'Brownsville, TX', 'Brooklyn, NY']
-# print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev', 'poverty_ratio']])
+print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev', 'poverty_ratio']])
 
 
 # Combined index plot.
@@ -85,6 +85,7 @@ def plot_regression_values(zip_code, master_df, categories, category_names):
     df = master_df[master_df['zcta'] == zip_code]
     df = df.loc[:, categories]
     new_df = pd.DataFrame({'categories': category_names, 'values': df.iloc[0]})
+    print(new_df)
     plt.figure(figsize=(10, 6))
     plt.title('Census Statistics for Zip Code ' + str(zip_code))
     sns.barplot(x='categories', y='values', data=new_df, palette=cmap)
@@ -94,4 +95,4 @@ def plot_regression_values(zip_code, master_df, categories, category_names):
 categories = ['dental_crudeprev', 'casthma_crudeprev', 'cholscreen_crudeprev', 'csmoking_crudeprev', 'ghlth_crudeprev', 'Race, total population, total, white alone', 'poverty_ratio', 'mhlth_crudeprev']
 category_names = ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'poor_physical_health', 'white_race', 'poverty_ratio', 'poor_mental_health']
 
-plot_regression_values(78701, master_df, categories, category_names)
+plot_regression_values(98052, master_df, categories, category_names)
