@@ -71,6 +71,7 @@ def plot_timeseries(zipcode, zip_dict):
         inf_values.append(inference(model, temp_values))
 
     plt.plot(inf_values, linestyle='--', marker='x')
+    categories.append('Pred MHLTH/POV')
     plt.legend(categories)
     plt.show()
 
@@ -98,4 +99,4 @@ for zipcode in zipcodes:
 
 
 # plot_bardata(32304, 2, zip_dict)
-plot_timeseries(98052, zip_dict)
+plot_timeseries(10456, zip_dict)
