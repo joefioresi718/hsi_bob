@@ -3,9 +3,9 @@
 *Alejandra Alas, Ashley Smith, Joseph Fioresi, Kenneth Colón, Meleah Chase Malcolm, Quinn Barber, Ralph Balderamos III, and Sydney Damas*
 
 # Overview
-(Solution Name) is a mobile/web application designed to help KPMG (who) analyze and interpret population data to identify the datapoints that correlate to financial and mental health inequity. We show some of the potential visualization options along with how the relevant datapoints were selected. This section needs work I'm way too tired to write well.
+SOL Online is a mobile/web application designed to help KPMG experts analyze and interpret population data to identify the elements that correlate to financial and mental health inequity. We show some of the potential visualization options along with how the relevant datapoints were selected.
 
-# Example Graphs
+### Example Graphs
 
 In all of these graphs, the y_axis statistics are 0-1 normalized.
 
