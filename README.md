@@ -58,6 +58,10 @@ The `clean_data` folder encompasses processed, cleaned, and resulting data from 
 This file is responsible for running and managing the **Streamlit** app which is available for anyone to scan the QR code and join. This QR code is available in the presentation slides, but the site can also be accessed from the link [here](https://ucf-hsibob.streamlit.app/).
 <br>
 
+#### 9. `model_inference.py`
+This file is reponsible for creating our mock time series data in which we predict future trends in our initial launch locations. These figures can than be seen in the **Streamlit** app where you can customize selections for your viewing pleasure.
+<br>
+
 # Running Yourself
 1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm` and `pip`
 2. `cd` into your directory where you would like to clone our repository.
