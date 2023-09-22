@@ -4,8 +4,25 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pandas as pd
-from graphing import minmax_normalize
-from model_inference import get_model, inference, plot_bardata, plot_timeseries, get_zip_dict
+from model_inference import get_model, plot_bardata, plot_timeseries, get_zip_dict
+
+
+# Define helper functions.
+# Used to normalize dataframe values.
+def minmax_normalize(series):
+    min_val = series.min()
+    max_val = series.max()
+    return (series - min_val) / (max_val - min_val)
+
+@st.cache_resource
+def get_inf_model():
+    model = get_model()[0]
+    zip_dict = get_zip_dict()
+    # Get ready for inference columns.
+    inference_df = pd.read_csv('clean_data/master.csv')
+    inference_df = pd.DataFrame(columns=inference_df.columns)
+    inference_df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1, inplace=True)
+    return model, zip_dict, inference_df
 
 
 def center_app():
@@ -90,16 +107,6 @@ add_blank_space(25)
 st.image("images/Census Graph.png")
 st.subheader("Provide correlations using lasso regression")
 add_blank_space(50)
-
-@st.cache_resource
-def get_inf_model():
-    model = get_model()[0]
-    zip_dict = get_zip_dict()
-    # Get ready for inference columns.
-    inference_df = pd.read_csv('clean_data/master.csv')
-    inference_df = pd.DataFrame(columns=inference_df.columns)
-    inference_df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1, inplace=True)
-    return model, zip_dict, inference_df
 
 model, zip_dict, inference_df = get_inf_model()
 zip_locations = [zip_dict[zip_code]["location"] for zip_code in zip_dict.keys()]
