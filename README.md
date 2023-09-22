@@ -7,6 +7,18 @@
 
 # Example Graphs
 
+In all of these graphs, the y_axis statistics are 0-1 normalized.
+
+### Weighted poverty-mental\_health-population scores per zip code:
+<img src="./figures/target_cities.svg" width="500" height=auto>
+
+### Relative correlations of statistics that contribute to high poverty and poor mental health rates:
+<img src="./figures/regression_variables.svg" width="500" height=auto>
+
+### Relevant Statistics for Austin Zip Code 78701:
+<img src="./figures/austin_zip_stats.svg" width="500" height=auto>
+
+
 
 # File Documentation
 #### 1. `mental_heath_corr.py`
