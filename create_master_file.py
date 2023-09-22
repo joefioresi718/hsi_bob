@@ -89,7 +89,7 @@ acs_race_file = clean_file(acs_race_file, 'clean_data/Cleaned Race File.csv')
 acs_education_file = clean_file(acs_education_file, 'clean_data/Cleaned Education File.csv')
 
 # Clean income file
-acs_income_file = clean_file(acs_income_file, 'clean_data/Cleaned Income File.csv')
+# acs_income_file = clean_file(acs_income_file, 'clean_data/Cleaned Income File.csv')
 
 # Clean poverty file
 acs_pov_file = clean_file(acs_pov_file, 'clean_data/Cleaned Poverty File.csv')
@@ -102,11 +102,20 @@ acs_insurance_file = clean_file(acs_insurance_file, 'clean_data/Cleaned Insuranc
 master_df = pd.merge(master_df, acs_pop_file, on='zcta')
 master_df = pd.merge(master_df, acs_race_file, on='zcta')
 master_df = pd.merge(master_df, acs_education_file, on='zcta')
-master_df = pd.merge(master_df, acs_income_file, on='zcta')
+# master_df = pd.merge(master_df, acs_income_file, on='zcta')
 master_df = pd.merge(master_df, acs_pov_file, on='zcta')
 master_df = pd.merge(master_df, acs_insurance_file, on='zcta')
 
 master_df.rename(columns={'Poverty status in the past 12 months by household type by age of householder, households, total, income in the past 12 months below poverty level': 'poverty_ratio'}, inplace=True)
+# Calculate target mental/poverty index score, normalize.
+master_df = master_df.copy()
+master_df['mhlth_pov_index'] = master_df['mhlth_crudeprev']**0.5 * master_df['poverty_ratio']**0.5
+master_df['mhlth_pov_index'] = minmax_normalize(master_df['mhlth_pov_index'])
+pov_columns = list(master_df.columns[master_df.columns.str.contains('poverty')])
+# pov_columns.remove('poverty_ratio')
+master_df.drop(columns=pov_columns, inplace=True)
+# Drop duplicated population columns.
+master_df.drop(columns=['Race, total population, total', 'Sex by age, total population, total', 'Health insurance coverage status by sex by age, civilian noninstitutionalized population, total'], inplace=True)
 master_df.to_csv('clean_data/master.csv', index=False)
 print(master_df.head(10))
 ################ Deemed irrelevant!!! ##################################
@@ -142,44 +151,3 @@ print(master_df.head(10))
 # print(len(hospital_file), len(set(hospital_file['zip_code'].tolist())))
 
 #######################################################################################
-
-
-# master_df_dict
-# for col in cdc_cols:
-#     col_data = [cdc_file[cdc_file['zcta5'] == zcta][col] for zcta in zcta_list]
-#     col_data = [x.tolist()[0] if len(x) == 1 else None for x in col_data]
-#     master_df_dict[col] = col_data
-
-
-# mhlth_crudeprev = [cdc_file[cdc_file['zcta5'] == zcta]['mhlth_crudeprev'] for zcta in zcta_list]
-# mhlth_crudeprev = [x.tolist()[0] if len(x) == 1 else None for x in mhlth_crudeprev]
-# print([len(x) for x in mhlth_crudeprev])
-# mhlth_crudeprev = [x[0] for x in mhlth_crudeprev if len(x) == 1]
-# print(mhlth_crudeprev[150])
-# num_households = acs_pov_file['Poverty status in the past 12 months by household type by age of householder, households, total'].tolist()
-
-# num_population = [cdc_file[cdc_file['zcta5'] == zcta]['totalpopulation'] for zcta in zcta_list]
-# num_population = [x.tolist()[0] if len(x) == 1 else 0 for x in num_population]
-# pop_array = np.array(num_population)
-# mean_pop = pop_array.mean()
-# print(f'Mean population across zip codes: {mean_pop:.2f}')
-
-
-# master_df = pd.DataFrame(master_df_dict)
-# # No PR :(
-# master_df = master_df[master_df['zcta'] >= 1000]
-# # master_df = master_df[master_df['poverty_ratio'] == 1.0]
-# # master_df = master_df[master_df['num_households'] > mean_pop]
-# # print(len(master_df))
-# # print(master_df.head(10))
-#
-# master_df['norm_pop'] = (master_df['total_population'] - master_df['total_population'].min()) / (master_df['total_population'].max() - master_df['total_population'].min())
-# master_df['norm_crude_mhlth'] = (master_df['crude_mhlth'] - master_df['crude_mhlth'].min()) / (master_df['crude_mhlth'].max() - master_df['crude_mhlth'].min())
-# master_df['norm_poverty_ratio'] = (master_df['poverty_ratio'] - master_df['poverty_ratio'].min()) / (master_df['poverty_ratio'].max() - master_df['poverty_ratio'].min())
-#
-# master_df['weighted_score'] = master_df['norm_pop']**0.33 + master_df['norm_crude_mhlth']**0.33 + master_df['norm_poverty_ratio']**0.33
-# master_df['weighted_score'] = (master_df['weighted_score'] - master_df['weighted_score'].min()) / (master_df['weighted_score'].max() - master_df['weighted_score'].min())
-# master_df.sort_values(by=['weighted_score'], inplace=True, ascending=False, ignore_index=True)
-# print(master_df.head(10))
-#
-#
