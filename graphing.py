@@ -2,21 +2,30 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap
 
+# Create a colormap with just two colors: blue and yellow
+colors = [(0, 'tab:blue'), (1, 'gold')]
+cmap_name = 'blue_yellow'
+blue_yellow = LinearSegmentedColormap.from_list(cmap_name, colors)
 
 master_df = pd.read_csv('clean_data/master.csv')
+# cmap_name = 'Blues_d'
+cmap = sns.color_palette("Blues_r", n_colors=3) + sns.color_palette("YlOrBr", n_colors=7)[:3]
+# sns.palplot(cmap_name)
+# plt.show()
+# exit()
 
-dental_crudeprev = -255.95209065009968
-casthma_crudeprev = 154.72934271036607
-cholscreen_crudeprev = -2.4390530867542486
-csmoking_crudeprev = 7.8504999789446455
-depression_crudeprev = 24.723082389407598
-ghlth_crudeprev = 68.74041508603842
-Race_total_population_total_white_alone = -45.37996938016137
+dental_crudeprev = -260.1234740089023
+casthma_crudeprev = 169.0422638032042 
+cholscreen_crudeprev = -3.8168575344060063
+csmoking_crudeprev = 16.68021834248791
+ghlth_crudeprev = 65.52371230460604
+Race_total_population_total_white_alone = -38.97065106719211
 
 data = {
-    'categories': ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'depression', 'poor_physical_health', 'white_race'],
-    'values': [dental_crudeprev, casthma_crudeprev, cholscreen_crudeprev, csmoking_crudeprev, depression_crudeprev, ghlth_crudeprev, Race_total_population_total_white_alone]
+    'categories': ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'poor_physical_health', 'white_race'],
+    'values': [dental_crudeprev, casthma_crudeprev, cholscreen_crudeprev, csmoking_crudeprev, ghlth_crudeprev, Race_total_population_total_white_alone]
     }
 df = pd.DataFrame(data)
 df.sort_values(by=['values'], inplace=True, ascending=False, ignore_index=True)
@@ -25,7 +34,7 @@ df.sort_values(by=['values'], inplace=True, ascending=False, ignore_index=True)
 plt.figure(figsize=(10, 6))
 plt.title('Correlation between Census Statistics and Mental Health/Poverty')
 # sns.regplot(x='ghlth_crudeprev', y='mhlth_pov_index', data=master_df)
-sns.barplot(x='categories', y='values', data=data, order=df['categories'].tolist(), palette='Blues_d')
+sns.barplot(x='categories', y='values', data=data, order=df['categories'].tolist(), palette=cmap)
 # Set the x-axis labels diagonal
 plt.xticks(rotation=15)
 # Remove numbers on the y-axis.
@@ -51,7 +60,7 @@ print(df.loc[:, ['zcta', 'weighted_index', 'totalpopulation', 'mhlth_crudeprev',
 
 # Combined index plot.
 plt.figure(figsize=(10, 6))
-sns.barplot(x='location', y='weighted_index', data=df, palette="viridis", order=df['location'].tolist())
+sns.barplot(x='location', y='weighted_index', data=df, palette=cmap, order=df['location'].tolist())
 plt.ylim((0.9, 1.0))
 plt.title('Top 5 Zip Codes with Highest Weighted Index')
 plt.show()
@@ -59,7 +68,7 @@ plt.show()
 # Combined bar plot.
 df = df[['location', 'poverty_ratio', 'mhlth_crudeprev']]
 df.rename({'mhlth_crudeprev': 'poor_mental_health'}, axis=1, inplace=True)
-df.plot(x='location', kind='bar', figsize=(10, 6), rot=0, colormap='Set1', title='Poverty & Mental Health Issue Ratio per Zip Code', ylabel='Ratio', xlabel='Zip Code')
+df.plot(x='location', kind='bar', figsize=(10, 6), rot=0, colormap=blue_yellow, title='Poverty & Mental Health Issue Ratio per Zip Code', ylabel='Ratio', xlabel='Zip Code')
 plt.show()
 
 # Function to plot stats given a zip code.
@@ -70,11 +79,11 @@ def plot_regression_values(zip_code, master_df, categories, category_names):
     print(new_df)
     plt.figure(figsize=(10, 6))
     plt.title('Census Statistics for Zip Code ' + str(zip_code))
-    sns.barplot(x='categories', y='values', data=new_df, palette='Blues_d')
-    plt.xticks(rotation=15)
+    sns.barplot(x='categories', y='values', data=new_df, palette=cmap)
+    plt.xticks(rotation=17)
     plt.show()
 
-categories = ['dental_crudeprev', 'casthma_crudeprev', 'cholscreen_crudeprev', 'csmoking_crudeprev', 'depression_crudeprev', 'ghlth_crudeprev', 'Race, total population, total, white alone', 'poverty_ratio', 'mhlth_crudeprev']
-category_names = ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'depression', 'poor_physical_health', 'white_race', 'poverty_ratio', 'poor_mental_health']
+categories = ['dental_crudeprev', 'casthma_crudeprev', 'cholscreen_crudeprev', 'csmoking_crudeprev', 'ghlth_crudeprev', 'Race, total population, total, white alone', 'poverty_ratio', 'mhlth_crudeprev']
+category_names = ['dental', 'asthma', 'cholestorol_screening', 'smoking', 'poor_physical_health', 'white_race', 'poverty_ratio', 'poor_mental_health']
 
-plot_regression_values(34223, master_df, categories, category_names)
+plot_regression_values(78701, master_df, categories, category_names)

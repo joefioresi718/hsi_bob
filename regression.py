@@ -16,7 +16,7 @@ df = pd.read_csv('clean_data/master.csv')
 df.fillna(0, inplace=True)
 
 # Separate the data into features and target variable.
-x = df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'privacy_ratio', 'teethlost_crudeprev'], axis=1)  # Features
+x = df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1)  # Features
 y = df['mhlth_pov_index']*1000  # Target variable
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
