@@ -25,8 +25,8 @@ In all of these graphs, the y_axis statistics are 0-1 normalized.
 This file is responsible for using `pandas` and `numpy` to clean and process CDC and ACS data together. The overall goal was to locate regions to initially launch our solution initiative. We were able to do this by conglomerating region data where all population, mental health problems, and poverty information is available/collected. We then used min-max scaling in order to normalize this data relative to all other regions. With these values we used exponential weighting to calculate our overall weighted score of locations to launch our initiative. We then min-max scaled this resulting score and display the results. Our findings for the best places to launch are the following:
 1. Tallahassee, Florida 32304
 2. Bronx, New York 10456
-3. Brownsville, Texas 78521
-4. Tampa, Florida 33620
+3. Los Angeles, California 90011
+4. Brownsville, Texas 78521
 5. Brooklyn, New York 11212
 <br>
 
@@ -63,7 +63,7 @@ This file is reponsible for creating our mock time series data in which we predi
 <br>
 
 # Running Yourself
-1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm` and `pip`
+1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `pip`
 2. `cd` into your directory where you would like to clone our repository.
 3. Use `git clone https://github.com/joefioresi718/hsi_bob.git` to clone our repository
 4. Run `pip install -r requirements.txt` in your command line (`command prompt` or `powershell` on Windows and `terminal` on MAC)
