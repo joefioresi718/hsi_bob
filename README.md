@@ -3,9 +3,9 @@
 *Alejandra Alas, Ashley Smith, Joseph Fioresi, Kenneth Colón, Meleah Chase Malcolm, Quinn Barber, Ralph Balderamos III, and Sydney Damas*
 
 # Overview
-(Solution Name) is a mobile/web application designed to help KPMG (who) analyze and interpret population data to identify the datapoints that correlate to financial and mental health inequity. We show some of the potential visualization options along with how the relevant datapoints were selected. This section needs work I'm way too tired to write well.
+SOL Online is a mobile/web application designed to help KPMG experts analyze and interpret population data to identify the elements that correlate to financial and mental health inequity. We show some of the potential visualization options along with how the relevant datapoints were selected.
 
-# Example Graphs
+### Example Graphs
 
 In all of these graphs, the y_axis statistics are 0-1 normalized.
 
@@ -38,13 +38,30 @@ This file is responsible for cleaning up the CDC data from `CDC Places 2020 Heal
 This file is responsible for cleaning all the ACS data that we were given. This is done by attributing the abbreviated data names to their dictionary values in `ACS Data Dictionary.xlsx`. All this cleaned data is then stored in the `clean_data` folder to be used by other programs.
 <br>
 
-#### 4. `clean_data` & `data` folders
-The `data` folder encompasses all of the data that was provided by HSI. The only change made to the data was a conversion of the `Zip Code Index.csv` file to `Zip Code Index.xlsx`.
+#### 4. `graphing.py`
+This file is responsible for graphing and charting figures throughout the application. This includes but is not limited to figures in the prototype, construction of zip code data charts in the interactive component, and figures displaying throughout the `README.md`.
+<br>
+
+#### 5. `create_master_file.py`
+This file is responsible for compiling all the relevant data that we were able to clean, pre-process, scale, and normalize. This allows the data to be ready for `regression.py`, where machine learning techniques are used to determine correlations between different data points and increased poverty/mental heath issues. This file is saved in `clean_data` as `master.csv`.
+<br>
+
+#### 6. `regression.py`
+This file is responsible for the actual regression model itself. Using `master.csv` we run a `Lasso` regression model on the data to determine correlation statistics. We save our results to `figures/regression_variables.svg`.
+<br>
+
+#### 7. `clean_data` & `data` folders
+The `data` folder encompasses all the data that was provided by HSI. The only change made to the data was a conversion of the `Zip Code Index.csv` file to `Zip Code Index.xlsx`.
 The `clean_data` folder encompasses processed, cleaned, and resulting data from the above files.
+
+#### 8. `streamlit_app.py`
+This file is responsible for running and managing the **Streamlit** app which is available for anyone to scan the QR code and join. This QR code is available in the presentation slides, but the site can also be accessed from the link [here](https://ucf-hsibob.streamlit.app/).
+<br>
 
 # Running Yourself
 1. Make sure to have Python 3.9.X or 3.10.X installed on your system along with `npm` and `pip`
-2. Run `pip install pandas openpyxl` in your command line (command prompt on Windows and terminal on MAC)
-3. `cd` into your directory where you would like to clone our repository.
-4. Use `git clone https://github.com/joefioresi718/hsi_bob.git` to clone our repository
+2. `cd` into your directory where you would like to clone our repository.
+3. Use `git clone https://github.com/joefioresi718/hsi_bob.git` to clone our repository
+4. Run `pip install -r requirements.txt` in your command line (`command prompt` or `powershell` on Windows and `terminal` on MAC)
 5. Run the python files using compiler of your choice, see printed results and saved results
+6. (Optional) View statistics that have been pre-ran in `figures` and `images` folders.
