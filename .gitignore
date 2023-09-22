@@ -1,7 +1,6 @@
 # Additional files.
 data/~$*
 .idea/
-clean_data/master.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
