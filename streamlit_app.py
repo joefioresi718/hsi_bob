@@ -5,6 +5,8 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 from graphing import minmax_normalize
+from model_inference import get_model, inference, plot_bardata, plot_timeseries, get_zip_dict
+
 
 def center_app():
     st.markdown(
@@ -79,6 +81,22 @@ add_blank_space(25)
 st.image("images/Census Graph.png")
 st.subheader("Provide correlations using lasso regression")
 add_blank_space(50)
+
+model = get_model()[0]
+zip_dict = get_zip_dict()
+# Get ready for inference columns.
+inference_df = pd.read_csv('clean_data/master.csv')
+inference_df = pd.DataFrame(columns=inference_df.columns)
+inference_df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1, inplace=True)
+
+zip_locations = [zip_dict[zip_code]["location"] for zip_code in zip_dict.keys()]
+zcode = st.selectbox("Select a zip code", zip_dict.keys(), format_func=lambda x: f'{zip_dict[x]["location"]} - {x}')
+if zcode:
+    disp_timestep = ['Sept. 2023', 'Dec. 2023', 'Mar. 2024', 'Jun 2024', 'Sept 2024']
+    timestep = st.selectbox("Select a timestep", np.arange(5), format_func=lambda x: disp_timestep[x])
+    plot_bardata(model, zcode, timestep, zip_dict, inference_df)
+    plot_timeseries(model, zcode, zip_dict, inference_df)
+
 
 st.divider()
 st.subheader("Enter your zip code to see your regions results!")
