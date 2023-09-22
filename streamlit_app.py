@@ -64,6 +64,15 @@ def type_text(message, delay=0.1):
         time.sleep(delay)
     return container
 
+def type_script(message, delay=0.1):
+    container = st.empty()
+    typed_text = "Report: "
+    for char in message:
+        typed_text += char
+        container.caption(typed_text)
+        time.sleep(delay)
+    return container
+
 type_text("Scroll down and learn more!", delay=0.05)
 add_blank_space(300)
 def aligned_text(text, alignment='left'):
@@ -82,13 +91,17 @@ st.image("images/Census Graph.png")
 st.subheader("Provide correlations using lasso regression")
 add_blank_space(50)
 
-model = get_model()[0]
-zip_dict = get_zip_dict()
-# Get ready for inference columns.
-inference_df = pd.read_csv('clean_data/master.csv')
-inference_df = pd.DataFrame(columns=inference_df.columns)
-inference_df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1, inplace=True)
+@st.cache_resource
+def get_inf_model():
+    model = get_model()[0]
+    zip_dict = get_zip_dict()
+    # Get ready for inference columns.
+    inference_df = pd.read_csv('clean_data/master.csv')
+    inference_df = pd.DataFrame(columns=inference_df.columns)
+    inference_df.drop(['zcta', 'mhlth_pov_index', 'mhlth_crudeprev', 'poverty_ratio', 'teethlost_crudeprev', 'depression_crudeprev'], axis=1, inplace=True)
+    return model, zip_dict, inference_df
 
+model, zip_dict, inference_df = get_inf_model()
 zip_locations = [zip_dict[zip_code]["location"] for zip_code in zip_dict.keys()]
 zcode = st.selectbox("Select a zip code", zip_dict.keys(), format_func=lambda x: f'{zip_dict[x]["location"]} - {x}')
 if zcode:
@@ -96,6 +109,18 @@ if zcode:
     timestep = st.selectbox("Select a timestep", np.arange(5), format_func=lambda x: disp_timestep[x])
     plot_bardata(model, zcode, timestep, zip_dict, inference_df)
     plot_timeseries(model, zcode, zip_dict, inference_df)
+
+scripts = {
+    32304: "This zip code is located in Tallahassee, Florida. It has a high poverty ratio, and a high mental health issue ratio. Across time, the various contributing factors seem to waver without consistently improving or declining. This indicates that more focus should be placed on this zip code to help improve the mental health of its residents. Consider focusing on improving the dental health of the residents, as this is the most significant factor in the mental health issue ratio.",
+    10456: "This zip code is located in the Bronx (NYC), NY. Compared to other areas, the Bronx has a particularly diverse population. However, it has an unusually high ratio of asthmatics and people with poor physical health. That being said, across the past year, these factors have drastically improved, leading to a decreased risk of mental health issues.",
+    90011: "This zip code is located in Los Angeles, CA. This region has particularly low access to dental care, and a higher ratio of people with low physical health. These factors have seen only minor improvement over the past year. Consider applying more focus on the general physical health of the residents.",
+    98052: "This zip code is located in Redmond, WA. This region had a low poverty mental-health index around Sept. 2023, but has experienced significant decline in each of the major correlated factors since. This may be due to the (hypothetical) departure of a major employer in the area. Without said employer incentivising proper physical and mental care, this region has seen a decline. The residents have been calling for the return of this employer in an effort to restore balance to Redmond, WA.",
+}
+report_button = st.button("Generate Report")
+if report_button:
+    script = scripts[zcode]
+    type_script(script, delay=0.02)
+    # st.markdown(script, unsafe_allow_html=True)
 
 
 st.divider()
